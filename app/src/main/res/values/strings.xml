@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Expense Manager</string>
+
+    <!--    Splash Screen-->
+    <string name="splash_s_img_des">Arvo logo</string>
+    <string name="splash_s_company">from Arvo</string>
+    <string name="title_activity_splash">SplashActivity</string>
+</resources>
