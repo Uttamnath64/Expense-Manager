@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace = "com.arvo.expensemanager"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.arvo.expensemanager"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -58,11 +58,16 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation("com.google.android.datatransport:transport-runtime:3.1.9")
+    implementation("androidx.compose.foundation:foundation-android:1.5.3")
+    implementation("androidx.wear.compose:compose-material:1.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     debugImplementation("androidx.compose.ui:ui-tooling")
@@ -71,5 +76,17 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07")
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.3.1")
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha10")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02")
 
+    implementation("androidx.room:room-runtime:2.2.5")
+
+    annotationProcessor("androidx.room:room-compiler:2.2.5")
+
+    implementation("com.google.accompanist:accompanist-pager:0.27.1") // Pager
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.27.1")
+
+//    implementation("androidx.room:room-runtime:2.3.0")
+//    kapt("androidx.room:room-compiler:2.3.0")
+//    implementation("androidx.room:room-ktx:2.3.0")
+//    testImplementation("androidx.room:room-testing:2.3.0")
 }

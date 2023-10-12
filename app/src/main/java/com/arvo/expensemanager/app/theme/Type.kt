@@ -19,19 +19,19 @@ val DarkTypography = Typography(
                 fontFamily = fonts,
                 fontWeight = FontWeight.W900,
                 color = White,
-                fontSize = 22.sp
+                fontSize = 24.sp
         ),
         headlineSmall = TextStyle(
                 fontFamily = fonts,
                 fontWeight = FontWeight.Medium,
                 color = White,
-                fontSize = 18.sp
+                fontSize = 22.sp
         ),
         titleLarge = TextStyle(
                 fontFamily = fonts,
                 fontWeight = FontWeight.Bold,
                 color = White,
-                fontSize = 22.sp
+                fontSize = 20.sp
         ),
         titleMedium = TextStyle(
                 fontFamily = fonts,
@@ -49,37 +49,37 @@ val DarkTypography = Typography(
                 fontFamily = fonts,
                 fontWeight = FontWeight.W900,
                 color = White,
-                fontSize = 18.sp
+                fontSize = 15.sp
         ),
         bodyMedium = TextStyle(
                 fontFamily = fonts,
                 fontWeight = FontWeight.SemiBold,
                 color = White,
-                fontSize = 16.sp
+                fontSize = 14.sp
         ),
         bodySmall = TextStyle(
                 fontFamily = fonts,
                 fontWeight = FontWeight.Medium,
                 color = White,
-                fontSize = 14.sp
+                fontSize = 12.sp
         ),
         labelLarge = TextStyle(
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Normal,
                 color = White,
-                fontSize = 14.sp
+                fontSize = 12.sp
         ),
         labelMedium = TextStyle(
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Light,
                 color = White,
-                fontSize = 12.sp
+                fontSize = 10.sp
         ),
         labelSmall = TextStyle(
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.ExtraLight,
                 color = White,
-                fontSize = 10.sp
+                fontSize = 8.sp
         )
 )
 

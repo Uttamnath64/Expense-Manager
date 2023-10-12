@@ -1,10 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="Transparent">#00000000</color>
+
+    <color name="Gray25">#FFF8F8F8</color>
+    <color name="Gray50">#FFF1F1F1</color>
+    <color name="Gray75">#FFECECEC</color>
+    <color name="Gray100">#FFE1E1E1</color>
+    <color name="Gray200">#FFEEEEEE</color>
+    <color name="Gray300">#FFACACAC</color>
+    <color name="Gray400">#FF919191</color>
+    <color name="Gray500">#FF6E6E6E</color>
+    <color name="Gray600">#FF535353</color>
+    <color name="Gray700">#FF616161</color>
+    <color name="Gray800">#FF292929</color>
+    <color name="Gray900">#FF212121</color>
+    <color name="Gray950">#FF141414</color>
+
+    <color name="SecondColor">#FFF6F6F6</color>
+    <color name="BackColor">#FFFFFFFF</color>
+
+
+
+    <color name="DarkSecondColor">#FF282828</color>
+    <color name="DarkBackColor">#FF121212</color>
+
+    // Black Colors
+    <color name="Black">#FF3E3E3E</color>
+    <color name="Black_300">#FF707070</color>
+    <color name="Black_600">#FF828DA8</color>
+    <color name="Black_900">#FF9A9A9A</color>
+
+    // White Colors
+    <color name="White">#FFE8EAED</color>
+    <color name="White_300">#FF9AA0A6</color>
+    <color name="White_600">#FF7E7E7E</color>
+    <color name="White_900">#FF999898</color>
+
+    // More Colors
+    <color name="colorRed">#FFFA7A71</color>
+    <color name="colorGreen">#FF69B96D</color>
+
+    // App Colors
+    <color name="AppColor300">#FF22A699</color>
+    <color name="AppColor600">#8D22A699</color>
+    <color name="AppColor900">#FF0E6B62</color>
+
+    <color name="AppColorSec300">#FF404c5a</color>
+    <color name="AppColorSec600">#8D404C5A</color>
+    <color name="AppColorSec700">#FF263E5A</color>
+
+    <color name="colorGreen300">#FF69B96D</color>
+    <color name="colorGreen600">#8D69B96D</color>
+    <color name="colorGreen900">#FF309735</color>
+
+    <color name="colorRed300">#FFFA7A71</color>
+    <color name="colorRed600">#8DFA7A71</color>
+    <color name="colorRed900">#FFDB382D</color>
+
+    <color name="colorBackground">#FFFFFFFF</color>
+    <color name="darkColorBackground">#FF282828</color>
+
+    <color name="colorOutline">#FF707070</color>
+
+    <color name="CardDark">#FF3B3E43</color>
+    <color name="CardLight">@color/White</color>
+
+
 </resources>
