@@ -24,9 +24,9 @@ fun CategoryTab() {
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = "Music View",
+            text = "Category View",
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = Color.Black,
             modifier = Modifier.align(Alignment.CenterHorizontally),
             textAlign = TextAlign.Center,
             fontSize = 25.sp

@@ -24,7 +24,7 @@ fun AnalysisTab() {
             .wrapContentSize(Alignment.Center)
     ) {
         Text(
-            text = "Music View",
+            text = "Analysis View",
             fontWeight = FontWeight.Bold,
             color = Color.Black,
             modifier = Modifier.align(Alignment.CenterHorizontally),
