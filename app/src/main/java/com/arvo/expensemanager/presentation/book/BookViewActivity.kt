@@ -1,22 +1,12 @@
-package com.arvo.expensemanager.presentation.page
+package com.arvo.expensemanager.presentation.book
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LeadingIconTab
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -26,18 +16,14 @@ import com.arvo.expensemanager.app.widget.TabItem
 import com.arvo.expensemanager.app.widget.Tabs
 import com.arvo.expensemanager.app.widget.TabsContent
 import com.arvo.expensemanager.app.widget.TopBarComposable
-import com.arvo.expensemanager.presentation.page.page.AnalysisActivity
-import com.arvo.expensemanager.presentation.page.page.CategoryActivity
-import com.arvo.expensemanager.presentation.page.page.EntityActivity
 import com.google.accompanist.pager.ExperimentalPagerApi
-import kotlinx.coroutines.launch
 
 @OptIn(
     ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
     ExperimentalPagerApi::class
 )
 @Composable
-fun PageViewActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostController) {
+fun BookViewActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostController) {
 
     val tabs = listOf(
         TabItem.Entity,
@@ -61,10 +47,10 @@ fun PageViewActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostCont
 
 @Preview
 @Composable
-fun PageViewActivityP(){
+fun BookViewActivityPreview(){
     ExpenseManagerTheme {
         Surface {
-            PageViewActivity({
+            BookViewActivity({
 
             }, rememberNavController()
             )

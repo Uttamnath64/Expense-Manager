@@ -2,6 +2,6 @@ package com.arvo.expensemanager.presentation
 
 object Routes {
     const val HOME_SCREEN = "HOME_SCREEN"
-    const val PAGE_ADD_SCREEN = "PAGE_ADD_SCREEN"
-    const val PAGE_VIEW_SCREEN = "PAGE_VIEW_SCREEN"
+    const val ADD_BOOK_SCREEN = "ADD_BOOK_SCREEN"
+    const val BOOK_VIEW_SCREEN = "BOOK_VIEW_SCREEN"
 }

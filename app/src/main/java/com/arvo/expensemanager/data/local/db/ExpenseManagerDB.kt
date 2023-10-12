@@ -6,21 +6,21 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.arvo.expensemanager.data.local.dao.CategoryModelDao
-import com.arvo.expensemanager.data.local.dao.PageDataModelDao
-import com.arvo.expensemanager.data.local.dao.PageModelDao
+import com.arvo.expensemanager.data.local.dao.BookEntryModelDao
+import com.arvo.expensemanager.data.local.dao.BookModelDao
 import com.arvo.expensemanager.data.model.local.category.CategoryEntity
-import com.arvo.expensemanager.data.model.local.page.PageEntity
-import com.arvo.expensemanager.data.model.local.pageData.PageDataEntity
+import com.arvo.expensemanager.data.model.local.book.BookEntity
+import com.arvo.expensemanager.data.model.local.pageData.BookEntryEntity
 
 @Database(
-    entities = [PageEntity::class, PageDataEntity::class, CategoryEntity::class],
+    entities = [BookEntity::class, BookEntryEntity::class, CategoryEntity::class],
     version = 1,
     exportSchema = false
 )
 @TypeConverters
 abstract class ExpenseManagerDB : RoomDatabase() {
-    abstract fun PageModelDao(): PageModelDao
-    abstract fun PageDataModelDao(): PageDataModelDao
+    abstract fun PageModelDao(): BookModelDao
+    abstract fun PageDataModelDao(): BookEntryModelDao
     abstract fun CategoryModelDao(): CategoryModelDao
 
     companion object {

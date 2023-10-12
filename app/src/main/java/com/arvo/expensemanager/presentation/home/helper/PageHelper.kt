@@ -1,11 +1,9 @@
-package com.arvo.expensemanager.presentation.home.view
+package com.arvo.expensemanager.presentation.home.helper
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,15 +24,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.arvo.expensemanager.R
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.theme.colorGreen900
 import com.arvo.expensemanager.model.dto.PageDto.PageDto
-import com.arvo.expensemanager.presentation.Routes
-import com.arvo.expensemanager.presentation.home.HomeActivity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

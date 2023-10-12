@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,7 +26,7 @@ import com.arvo.expensemanager.app.widget.TextFieldComposable
 import com.arvo.expensemanager.app.widget.TopBarComposable
 
 @Composable
-fun CreatePageActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostController) {
+fun AddBookActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostController) {
 
     val text = { mutableStateOf("") }
 
@@ -108,10 +107,10 @@ fun CreatePageActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostCo
 
 @Preview
 @Composable
-fun CreatePageActivityPreview(){
+fun AddBookActivityPreview(){
     ExpenseManagerTheme {
         Surface {
-            CreatePageActivity({
+            AddBookActivity({
 
             }, rememberNavController()
             )
