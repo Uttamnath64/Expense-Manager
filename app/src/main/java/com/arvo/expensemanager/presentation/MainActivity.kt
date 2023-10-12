@@ -23,6 +23,7 @@ import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTheme
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -42,9 +43,10 @@ class MainActivity : ComponentActivity() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ExpenseManager() {
-    ExpenseManagerNavigationGraph()
+    NavigationGraph()
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {

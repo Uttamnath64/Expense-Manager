@@ -4,10 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.arvo.expensemanager.data.model.local.page.PageEntity
 
-@Entity(tableName = PageDataEntity.TABLE_NAME)
-data class PageDataEntity(
+@Entity(tableName = BookEntryEntity.TABLE_NAME)
+data class BookEntryEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = COLUMN_ID) val id: Int,
     @ColumnInfo(name = COLUMN_NAME) val name: String,
@@ -19,7 +18,7 @@ data class PageDataEntity(
     @ColumnInfo(name = COLUMN_CREATED) val created: String,
 ){
     companion object {
-        const val TABLE_NAME = "character_favorite"
+        const val TABLE_NAME = "book_entry"
         const val COLUMN_ID = "id"
         const val COLUMN_NAME = "name"
         const val COLUMN_DESCRIPTION = "description"

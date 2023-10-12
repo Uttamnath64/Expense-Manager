@@ -1,4 +1,4 @@
-package com.arvo.expensemanager.presentation.page.page
+package com.arvo.expensemanager.presentation.book.tabs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 
 @Composable
-fun CategoryActivity() {
+fun AnalysisTab() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -26,7 +26,7 @@ fun CategoryActivity() {
         Text(
             text = "Music View",
             fontWeight = FontWeight.Bold,
-            color = Color.White,
+            color = Color.Black,
             modifier = Modifier.align(Alignment.CenterHorizontally),
             textAlign = TextAlign.Center,
             fontSize = 25.sp
@@ -36,6 +36,6 @@ fun CategoryActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun CategoryActivityPreview() {
-    CategoryActivity()
+fun AnalysisTabPreview() {
+    AnalysisTab()
 }

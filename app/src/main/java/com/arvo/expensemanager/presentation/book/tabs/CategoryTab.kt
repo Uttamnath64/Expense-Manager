@@ -1,4 +1,4 @@
-package com.arvo.expensemanager.presentation.page.page
+package com.arvo.expensemanager.presentation.book.tabs
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 
 @Composable
-fun EntityActivity() {
+fun CategoryTab() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,6 +36,6 @@ fun EntityActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun EntityActivityPreview() {
-    EntityActivity()
+fun CategoryTabPreview() {
+    CategoryTab()
 }

@@ -1,12 +1,12 @@
-package com.arvo.expensemanager.data.model.local.page
+package com.arvo.expensemanager.data.model.local.book
 
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = PageEntity.TABLE_NAME)
-data class PageEntity(
+@Entity(tableName = BookEntity.TABLE_NAME)
+data class BookEntity(
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = COLUMN_ID) val id: Int,
@@ -16,7 +16,7 @@ data class PageEntity(
     @ColumnInfo(name = COLUMN_CREATED) val created: String,
 ) {
     companion object {
-        const val TABLE_NAME = "page"
+        const val TABLE_NAME = "book"
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_DESCRIPTION = "description"

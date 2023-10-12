@@ -5,25 +5,18 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -38,11 +31,10 @@ import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.model.dto.PageDto.PageDto
 import com.arvo.expensemanager.presentation.Routes
-import com.arvo.expensemanager.presentation.home.view.PageItem
+import com.arvo.expensemanager.presentation.home.helper.PageItem
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeActivity(nevController: NavController) {
@@ -133,7 +125,7 @@ fun HomeActivity(nevController: NavController) {
 
         // Floating Button
         FloatingActionButton(
-            onClick = { nevController.navigate(Routes.PAGE_ADD_SCREEN) },
+            onClick = { nevController.navigate(Routes.ADD_BOOK_SCREEN) },
             shape = CircleShape,
             modifier = Modifier
                 .constrainAs(floatingBtn){
@@ -246,10 +238,10 @@ fun CreatePageList(context: Context, nevController: NavController) {
     )
 
     LazyColumn{
-        itemsIndexed(pageList) { index, item ->
-            PageItem(item, context, {
-                nevController.navigate(Routes.PAGE_VIEW_SCREEN)
-            })
+        itemsIndexed(pageList) { _, item ->
+            PageItem(item, context) {
+                nevController.navigate(Routes.BOOK_VIEW_SCREEN)
+            }
         }
     }
 }
