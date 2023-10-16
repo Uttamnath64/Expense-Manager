@@ -1,4 +1,4 @@
-package com.arvo.expensemanager.data.model.dto.page
+package com.arvo.expensemanager.data.model.dto.book
 
 data class PageDto(
     val id: Int,
