@@ -1,9 +1,7 @@
-@file:Suppress("DEPRECATED_IDENTITY_EQUALS")
-
 package com.arvo.expensemanager.presentation.book.tabs
 
 
-import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -32,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.data.model.dto.book.BookEntryStruct
 import com.arvo.expensemanager.data.model.dto.book.BookTabStruct
-import com.arvo.expensemanager.presentation.book.helper.TableHeading
-import com.arvo.expensemanager.presentation.book.helper.TabsBody
+import com.arvo.expensemanager.presentation.book.helper.TableHeadingComposable
+import com.arvo.expensemanager.presentation.book.helper.TabsRowComposable
 
 @Composable
 fun BookTab() {
@@ -43,6 +40,7 @@ fun BookTab() {
 
     bookData = listOf(
         BookTabStruct(
+            1,
             "Aug 15, 2023",
             800.0,
             listOf(
@@ -67,6 +65,7 @@ fun BookTab() {
             )
         ),
         BookTabStruct(
+            2,
             "Aug 15, 2023",
             800.0,
             listOf(
@@ -91,6 +90,7 @@ fun BookTab() {
             )
         ),
         BookTabStruct(
+            3,
             "Aug 15, 2023",
             800.0,
             listOf(
@@ -116,7 +116,7 @@ fun BookTab() {
         )
     )
 
-    var selectedItem by remember { mutableStateOf<Int?>(null) }
+    var selectedItem by remember { mutableStateOf<Int>(1) }
 
     val current = LocalContext.current
 
@@ -128,8 +128,7 @@ fun BookTab() {
             .padding(16.dp)
             .background(ExpenseManagerColor.background)
     ) {
-        items(bookData) {item ->
-            val itemIndex = bookData.indexOf(item)
+        items(bookData, key = {it.id}) {item ->
             Card(
                 modifier = Modifier
                     .padding(6.dp)
@@ -142,30 +141,28 @@ fun BookTab() {
                 ),
             ) {
                 Column{
-                    TableHeading(itemIndex, selectedItem, item.date) {
+                    TableHeadingComposable(item.id, selectedItem, item.date) {
                         selectedItem = it
-                        Toast.makeText(current,itemIndex.toString(),Toast.LENGTH_LONG).show()
                     }
-                    item.bookEntryStruct.forEachIndexed { _, bookEntry ->
-                        val size = item.bookEntryStruct.size
-                        TabsBody(current, bookEntry, selectedItem == itemIndex)
-                        if (item.bookEntryStruct.indexOf(bookEntry) === size - 1) {
-                            if (selectedItem == itemIndex) {
-                                Button(
-                                    onClick = {},
+                    AnimatedVisibility(visible = (selectedItem == item.id)) {
+                        Column {
+                            item.bookEntryStruct.forEachIndexed { _, bookEntry ->
+                                TabsRowComposable(current, bookEntry)
+                            }
+                            Button(
+                                onClick = {},
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                shape = RoundedCornerShape(0.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(Color.Transparent),
+
+                                ) {
+                                Text(
+                                    text = "View More",
                                     modifier = Modifier
                                         .fillMaxSize(),
-                                    shape = RoundedCornerShape(0.dp),
-                                    colors = ButtonDefaults.outlinedButtonColors(Color.Transparent),
-
-                                    ) {
-                                    Text(
-                                        text = "View More",
-                                        modifier = Modifier
-                                            .fillMaxSize(),
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
+                                    textAlign = TextAlign.Center
+                                )
                             }
                         }
                     }

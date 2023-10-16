@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.arvo.expensemanager.presentation.book.BookViewActivity
-import com.arvo.expensemanager.presentation.home.AddBookActivity
+import com.arvo.expensemanager.presentation.book.AddBookActivity
 import com.arvo.expensemanager.presentation.home.HomeActivity
 
 @RequiresApi(Build.VERSION_CODES.O)
