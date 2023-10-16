@@ -30,14 +30,14 @@ import com.arvo.expensemanager.app.theme.colorGreen300
 import com.arvo.expensemanager.data.model.dto.book.BookEntryStruct
 
 @Composable
-fun TableHeading(index: Int?,selectedItem: Int?, date: String,onClick: (Int?) -> Unit) {
+fun TableHeadingComposable(index: Int,selectedItem: Int?, date: String,onClick: (Int) -> Unit) {
     val isClicked =  selectedItem == index
 
     val rotationState by animateFloatAsState(targetValue = if (isClicked) 90f else 270f, label = "")
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .clickable { onClick(if(isClicked) null else index)},
+            .clickable { onClick(if(isClicked) 0 else index)},
     ) {
         Row(
             modifier = Modifier
@@ -125,67 +125,65 @@ fun TableHeading(index: Int?,selectedItem: Int?, date: String,onClick: (Int?) ->
 }
 
 @Composable
-fun TabsBody(current: Context, data: BookEntryStruct, isClicked: Boolean) {
-    if (isClicked) {
+fun TabsRowComposable(current: Context, data: BookEntryStruct) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { Toast.makeText(current, data.id, Toast.LENGTH_LONG).show() },
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .clickable { Toast.makeText(current, data.id, Toast.LENGTH_LONG).show() },
+                .padding(12.dp, 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(12.dp, 8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxWidth(.4f),
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(.4f),
-                ) {
-                    Text(
-                        text = data.title,
-                        style = ExpenseManagerTypography.labelLarge
+                Text(
+                    text = data.title,
+                    style = ExpenseManagerTypography.labelLarge
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(.4f),
+                horizontalAlignment = Alignment.End
+            ) {
+                Text(
+                    text = data.case.toString(),
+                    style = ExpenseManagerTypography.labelLarge.copy(
+                        fontWeight = FontWeight.Bold
                     )
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(.4f),
-                    horizontalAlignment = Alignment.End
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(1f),
+                horizontalAlignment = Alignment.End
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = data.case.toString(),
+                        modifier = Modifier
+                            .padding(end = 8.dp),
+                        text = data.amount.toString(),
                         style = ExpenseManagerTypography.labelLarge.copy(
+                            color = colorGreen300,
                             fontWeight = FontWeight.Bold
                         )
                     )
-                }
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(1f),
-                    horizontalAlignment = Alignment.End
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            modifier = Modifier
-                                .padding(end = 8.dp),
-                            text = data.amount.toString(),
-                            style = ExpenseManagerTypography.labelLarge.copy(
-                                color = colorGreen300,
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .rotate(180f)
-                                .size(28.dp)
-                                .padding(7.dp),
-                            tint = ExpenseManagerColor.outline
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_back),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .rotate(180f)
+                            .size(28.dp)
+                            .padding(7.dp),
+                        tint = ExpenseManagerColor.outline
+                    )
                 }
             }
         }

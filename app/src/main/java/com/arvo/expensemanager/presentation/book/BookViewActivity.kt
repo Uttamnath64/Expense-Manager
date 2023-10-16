@@ -35,7 +35,7 @@ fun BookViewActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostCont
 
     Scaffold(
         topBar = {
-            TopBarComposable(text = "Create Page", nevController)
+            TopBarComposable(text = "View Book", nevController)
         },
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
