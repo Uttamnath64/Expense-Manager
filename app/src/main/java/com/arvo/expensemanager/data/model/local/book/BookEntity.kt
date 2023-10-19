@@ -19,7 +19,7 @@ data class BookEntity(
         const val TABLE_NAME = "book"
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
-        const val COLUMN_DESCRIPTION = "description"
+        const val COLUMN_DESCRIPTION = "descrnameiption"
         const val COLUMN_UPDATED = "updated"
         const val COLUMN_CREATED = "created"
     }

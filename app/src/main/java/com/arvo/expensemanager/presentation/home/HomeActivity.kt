@@ -240,7 +240,7 @@ fun CreatePageList(context: Context, nevController: NavController) {
     LazyColumn{
         itemsIndexed(pageList) { _, item ->
             PageItem(item, context) {
-                nevController.navigate(Routes.BOOK_VIEW_SCREEN)
+                nevController.navigate(Routes.BOOK_VIEW_SCREEN+"/${item.id}")
             }
         }
     }

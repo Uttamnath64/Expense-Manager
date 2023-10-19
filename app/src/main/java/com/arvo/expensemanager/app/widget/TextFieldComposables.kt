@@ -1,5 +1,6 @@
 package com.arvo.expensemanager.app.widget
 
+import android.widget.DatePicker
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
@@ -9,6 +10,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
+import kotlinx.coroutines.selects.select
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -21,14 +24,13 @@ fun TextFieldComposable(
     isError: Boolean = false,
     errorText: String = "",
     imeAction: ImeAction = ImeAction.Next,
-    maxLines: Int = 1
+    maxLines: Int = 1,
+    type: KeyboardType = KeyboardType.Text
 ) {
-    val text = remember { mutableStateOf(TextFieldValue(value)) }
     OutlinedTextField(
         modifier = modifier,
-        value = text.value.text,
+        value = value,
         onValueChange = {
-            text.value = TextFieldValue(it)
             onValueChange(it)
         },
         label = {
@@ -36,7 +38,7 @@ fun TextFieldComposable(
         },
         maxLines = maxLines,
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Text,
+            keyboardType = type,
             imeAction = imeAction
         ),
         isError = isError,

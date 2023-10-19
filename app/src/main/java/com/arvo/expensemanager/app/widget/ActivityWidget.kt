@@ -1,7 +1,6 @@
 package com.arvo.expensemanager.app.widget
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,17 +17,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.arvo.expensemanager.R
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 
 @Composable
-fun TopBarComposable(text: String, navController: NavController){
+fun TopBarComposable(
+    text: String, navController: NavController, style: TextStyle = ExpenseManagerTypography.titleMedium.copy(
+    color = ExpenseManagerColor.outline
+)){
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -61,9 +63,7 @@ fun TopBarComposable(text: String, navController: NavController){
                     start.linkTo(icon.end)
                 },
             text = text,
-            style = ExpenseManagerTypography.titleMedium.copy(
-                color = ExpenseManagerColor.outline
-            )
+            style = style
         )
 
     }

@@ -13,29 +13,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 
 @Composable
-fun AnalysisTab() {
+fun AnalysisTab(nevController: NavController, bookId: Int) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(ExpenseManagerColor.background)
             .wrapContentSize(Alignment.Center)
     ) {
-        Text(
-            text = "Analysis View",
-            fontWeight = FontWeight.Bold,
-            color = Color.Black,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 25.sp
-        )
+
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun AnalysisTabPreview() {
-    AnalysisTab()
+    AnalysisTab(rememberNavController(), 0)
 }

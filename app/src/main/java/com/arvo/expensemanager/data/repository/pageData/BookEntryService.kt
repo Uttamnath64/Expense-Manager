@@ -1,7 +1,7 @@
 package com.arvo.expensemanager.data.repository.pageData
 
 import com.arvo.expensemanager.data.local.dao.BookEntryModelDao
-import com.arvo.expensemanager.data.model.local.pageData.BookEntryEntity
+import com.arvo.expensemanager.data.model.local.bookEntry.BookEntryEntity
 
 class BookEntryService
 constructor(

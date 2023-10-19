@@ -13,6 +13,7 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import androidx.compose.material3.TabRow
+import androidx.navigation.NavHostController
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -47,9 +48,16 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabsContent(tabs: List<TabItem>, pagerState: PagerState) {
+fun TabsContent(
+    tabs: List<TabItem>,
+    pagerState: PagerState,
+    nevController: NavHostController,
+    bookId: Int?
+) {
     HorizontalPager(state = pagerState, count = tabs.size) { page ->
-        tabs[page].screen()
+        if (bookId != null) {
+            tabs[page].screen(nevController,bookId)
+        }
     }
 }
 

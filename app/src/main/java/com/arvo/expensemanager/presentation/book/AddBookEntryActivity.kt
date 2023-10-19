@@ -19,7 +19,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -30,21 +32,54 @@ import com.arvo.expensemanager.app.theme.ExpenseManagerTheme
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.widget.TextFieldComposable
 import com.arvo.expensemanager.app.widget.TopBarComposable
+import java.sql.Timestamp
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddBookEntryActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostController) {
+fun AddBookEntryActivity(id: Int?, type: Int?, nevController: NavHostController) {
 
     val current = LocalContext.current
 
     var title by remember { mutableStateOf("")}
     var description by remember { mutableStateOf("")}
+    var amount by remember { mutableStateOf<String>("")}
+    var caseType by remember { mutableStateOf<Boolean>(false)}
+    var bookId by remember { mutableStateOf<Int>(1)}
+    var paymentType by remember { mutableStateOf<String>("")}
+    var date by remember { mutableStateOf<Timestamp>(Timestamp(System.currentTimeMillis()))}
 
-    val isActive = (title.trim() != "" && description.trim() != "")
+    val isActive = (title.trim() != "" && amount.toInt() > 0)
+
+    // set Screen
+    var style: TextStyle
+    var topBarTitle = ""
+
+    when (type) {
+        1 -> {
+            style = ExpenseManagerTypography.titleMedium.copy(
+                color = ExpenseManagerColor.outline
+            )
+            topBarTitle = "Edit Entry"
+        }
+        2 -> {
+            style = ExpenseManagerTypography.titleMedium.copy(
+                color = ExpenseManagerColor.tertiary
+            )
+            topBarTitle = "Add Case In Entry"
+        }
+        else -> {
+            style = ExpenseManagerTypography.titleMedium.copy(
+                color = ExpenseManagerColor.error
+            )
+            topBarTitle = "Add Case Out Entry"
+        }
+    }
 
     Scaffold(
         topBar = {
-            TopBarComposable(text = "Add Book", nevController)
+            TopBarComposable(text = topBarTitle, navController =  nevController,
+                style = style)
         },
     ) { padding ->
         ConstraintLayout(
@@ -69,7 +104,7 @@ fun AddBookEntryActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHost
                     onValueChange = {
                         title = it
                     },
-                    label = "Enter name",
+                    label = "Enter title",
                     isError = false,
                     errorText = "",
                     imeAction = ImeAction.Done
@@ -85,7 +120,34 @@ fun AddBookEntryActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHost
                     label = "Enter description",
                     isError = false,
                     errorText = "",
+                    imeAction = ImeAction.Done
+                )
+                TextFieldComposable(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    value = amount,
+                    onValueChange = {
+                        amount = it
+                    },
+                    label = "Enter amount",
+                    isError = false,
+                    errorText = "",
                     imeAction = ImeAction.Done,
+                    type = KeyboardType.Number
+                )
+                TextFieldComposable(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    value = paymentType,
+                    onValueChange = {
+                        paymentType = it
+                    },
+                    label = "Enter payment type",
+                    isError = false,
+                    errorText = "",
+                    imeAction = ImeAction.Done
                 )
             }
 
@@ -123,12 +185,10 @@ fun AddBookEntryActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHost
 
 @Preview
 @Composable
-fun AddBookActivityPreview(){
+fun AddBookEntryActivityPreview(){
     ExpenseManagerTheme {
         Surface {
-            AddBookActivity({
-
-            }, rememberNavController()
+            AddBookEntryActivity(0,0, rememberNavController()
             )
         }
     }

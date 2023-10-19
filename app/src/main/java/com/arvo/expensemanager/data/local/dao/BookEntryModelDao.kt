@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.arvo.expensemanager.data.model.local.pageData.BookEntryEntity
+import com.arvo.expensemanager.data.model.local.bookEntry.BookEntryEntity
 
 @Dao
 interface BookEntryModelDao : BaseDao<BookEntryEntity> {

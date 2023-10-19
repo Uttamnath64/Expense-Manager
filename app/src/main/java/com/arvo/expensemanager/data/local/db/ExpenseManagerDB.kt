@@ -10,7 +10,7 @@ import com.arvo.expensemanager.data.local.dao.BookEntryModelDao
 import com.arvo.expensemanager.data.local.dao.BookModelDao
 import com.arvo.expensemanager.data.model.local.category.CategoryEntity
 import com.arvo.expensemanager.data.model.local.book.BookEntity
-import com.arvo.expensemanager.data.model.local.pageData.BookEntryEntity
+import com.arvo.expensemanager.data.model.local.bookEntry.BookEntryEntity
 
 @Database(
     entities = [BookEntity::class, BookEntryEntity::class, CategoryEntity::class],

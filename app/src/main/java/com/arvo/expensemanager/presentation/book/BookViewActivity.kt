@@ -23,12 +23,18 @@ import com.google.accompanist.pager.ExperimentalPagerApi
     ExperimentalPagerApi::class
 )
 @Composable
-fun BookViewActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostController) {
+fun BookViewActivity(bookId: Int?, nevController: NavHostController) {
+
+//    val tabs = listOf(
+//        TabItem.Entity,
+//        TabItem.Analysis,
+//        TabItem.Category
+//    )
 
     val tabs = listOf(
         TabItem.Entity,
         TabItem.Analysis,
-        TabItem.Category
+//        TabItem.Category
     )
     val pagerState = com.google.accompanist.pager.rememberPagerState()
 
@@ -40,7 +46,7 @@ fun BookViewActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostCont
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             Tabs(tabs = tabs, pagerState = pagerState)
-            TabsContent(tabs = tabs, pagerState = pagerState)
+            TabsContent(tabs = tabs, pagerState = pagerState, nevController,bookId)
         }
     }
 }
@@ -50,9 +56,7 @@ fun BookViewActivity(onItemCreate: (Boolean) -> Unit, nevController: NavHostCont
 fun BookViewActivityPreview(){
     ExpenseManagerTheme {
         Surface {
-            BookViewActivity({
-
-            }, rememberNavController()
+            BookViewActivity(0, rememberNavController()
             )
         }
     }
