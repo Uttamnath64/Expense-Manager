@@ -176,51 +176,51 @@ fun BookTab(nevController: NavController, bookId: Int) {
         ),
         BookTabStruct(
             6,
-            "Aug 15, 2023",
-            800.0,
+            "Oct 12, 2023",
+            290.0,
             listOf(
                 BookEntryStruct(
                     1,
-                    "Enrty 1",
-                    -30.0,
-                    400.0
+                    "water",
+                    -20.0,
+                    290.0
                 ),
                 BookEntryStruct(
                     2,
-                    "Enrty 2",
-                    -30.0,
-                    400.0
+                    "ticket",
+                    -50.0,
+                    310.0
                 ),
                 BookEntryStruct(
-                    3,
-                    "Enrty 3",
-                    -30.0,
-                    400.0
+                    1,
+                    "tea",
+                    -10.0,
+                    360.0
                 )
             )
         ),
         BookTabStruct(
             7,
-            "Aug 15, 2023",
-            800.0,
+            "Oct 11, 2023",
+            370.0,
             listOf(
                 BookEntryStruct(
-                    1,
-                    "Enrty 1",
-                    -30.0,
-                    400.0
+                    3,
+                    "food",
+                    -100.0,
+                    370.0
                 ),
                 BookEntryStruct(
                     2,
-                    "Enrty 2",
+                    "milk",
                     -30.0,
-                    400.0
+                    470.0
                 ),
                 BookEntryStruct(
-                    3,
-                    "Enrty 3",
-                    -30.0,
-                    400.0
+                    1,
+                    "add money",
+                    +500.0,
+                    500.0
                 )
             )
         )
