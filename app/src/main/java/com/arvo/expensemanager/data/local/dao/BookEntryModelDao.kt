@@ -16,7 +16,7 @@ interface BookEntryModelDao : BaseDao<BookEntryEntity> {
     suspend fun getList(): List<BookEntryEntity>
 
     @Update
-    override suspend fun update(pageDataEntity: BookEntryEntity)
+    override suspend fun update(bookEntryEntity: BookEntryEntity)
 
     @Query("SELECT * FROM ${BookEntryEntity.TABLE_NAME} WHERE id = :id")
     suspend fun getById(id: Int): BookEntryEntity?

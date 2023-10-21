@@ -74,24 +74,24 @@ fun HomeActivity(nevController: NavController) {
         }
 
         // Account Button
-        IconButton(
-            onClick = {},
-            modifier = Modifier
-                .padding(end = 8.dp)
-                .constrainAs(accountBtn) {
-                    top.linkTo(welcomeBox.top)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(spacer1.bottom)
-                }
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_circle),
-                contentDescription = "Account Icon",
-                tint = ExpenseManagerColor.outline,
-                modifier = Modifier
-                    .size(28.dp)
-            )
-        }
+//        IconButton(
+//            onClick = {},
+//            modifier = Modifier
+//                .padding(end = 8.dp)
+//                .constrainAs(accountBtn) {
+//                    top.linkTo(welcomeBox.top)
+//                    end.linkTo(parent.end)
+//                    bottom.linkTo(spacer1.bottom)
+//                }
+//        ) {
+//            Icon(
+//                painter = painterResource(id = R.drawable.ic_circle),
+//                contentDescription = "Account Icon",
+//                tint = ExpenseManagerColor.outline,
+//                modifier = Modifier
+//                    .size(28.dp)
+//            )
+//        }
 
         // Spacer 1
         Spacer(
