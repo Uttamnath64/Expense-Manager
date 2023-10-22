@@ -9,8 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.arvo.expensemanager.presentation.book.BookViewActivity
-import com.arvo.expensemanager.presentation.book.AddBookActivity
 import com.arvo.expensemanager.presentation.book.AddBookEntryActivity
+import com.arvo.expensemanager.presentation.book.AddEditBookActivity
 import com.arvo.expensemanager.presentation.home.HomeActivity
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -23,7 +23,7 @@ fun NavigationGraph(){
             HomeActivity(nevController)
         }
         composable(Routes.ADD_BOOK_SCREEN){
-            AddBookActivity({},nevController)
+            AddEditBookActivity(nevController)
         }
         composable(
             Routes.BOOK_VIEW_SCREEN + "/{id}",

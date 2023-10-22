@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,7 +30,7 @@ import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.model.dto.PageDto.PageDto
 import com.arvo.expensemanager.presentation.Routes
-import com.arvo.expensemanager.presentation.home.helper.PageItem
+import com.arvo.expensemanager.presentation.home.components.PageItem
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

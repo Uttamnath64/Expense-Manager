@@ -35,11 +35,11 @@ import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.theme.colorGreen300
 import com.arvo.expensemanager.app.theme.colorRed300
-import com.arvo.expensemanager.data.model.dto.book.BookEntryStruct
-import com.arvo.expensemanager.data.model.dto.book.BookTabStruct
+import com.arvo.expensemanager.model.dto.PageDto.BookEntryStruct
+import com.arvo.expensemanager.model.dto.PageDto.BookTabStruct
 import com.arvo.expensemanager.presentation.Routes
-import com.arvo.expensemanager.presentation.book.helper.TableHeadingComposable
-import com.arvo.expensemanager.presentation.book.helper.TabsRowComposable
+import com.arvo.expensemanager.presentation.book.components.TableHeadingComposable
+import com.arvo.expensemanager.presentation.book.components.TabsRowComposable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
