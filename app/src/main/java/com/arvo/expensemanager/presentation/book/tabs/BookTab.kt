@@ -29,208 +29,31 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.theme.colorGreen300
 import com.arvo.expensemanager.app.theme.colorRed300
-import com.arvo.expensemanager.data.model.dto.book.BookEntryStruct
-import com.arvo.expensemanager.data.model.dto.book.BookTabStruct
+import com.arvo.expensemanager.model.dto.PageDto.BookEntryStruct
+import com.arvo.expensemanager.model.dto.PageDto.BookTabStruct
 import com.arvo.expensemanager.presentation.Routes
-import com.arvo.expensemanager.presentation.book.helper.TableHeadingComposable
-import com.arvo.expensemanager.presentation.book.helper.TabsRowComposable
+import com.arvo.expensemanager.presentation.book.components.TableHeadingComposable
+import com.arvo.expensemanager.presentation.book.components.TabsRowComposable
+import com.arvo.expensemanager.presentation.book.viewModels.ViewBookViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookTab(nevController: NavController, bookId: Int) {
+fun BookTab(
+    nevController: NavController,
+    bookId: Int,
+    viewModel: ViewBookViewModel = hiltViewModel()
+) {
 
-    var bookData: List<BookTabStruct>
-    bookData = ArrayList<BookTabStruct>()
-
-    bookData = listOf(
-        BookTabStruct(
-            1,
-            "Aug 15, 2023",
-            800.0,
-            listOf(
-                BookEntryStruct(
-                    1,
-                    "Enrty 1",
-                    -30.0,
-                    400.0
-                ),
-                BookEntryStruct(
-                    2,
-                    "Enrty 2",
-                    -30.0,
-                    400.0
-                ),
-                BookEntryStruct(
-                    3,
-                    "Enrty 3",
-                    -30.0,
-                    400.0
-                )
-            )
-        ),
-        BookTabStruct(
-            2,
-            "Aug 15, 2023",
-            800.0,
-            listOf(
-                BookEntryStruct(
-                    1,
-                    "Enrty 1",
-                    -30.0,
-                    400.0
-                ),
-                BookEntryStruct(
-                    2,
-                    "Enrty 2",
-                    -30.0,
-                    400.0
-                ),
-                BookEntryStruct(
-                    3,
-                    "Enrty 3",
-                    -30.0,
-                    400.0
-                )
-            )
-        ),
-        BookTabStruct(
-            3,
-            "Aug 15, 2023",
-            800.0,
-            listOf(
-                BookEntryStruct(
-                    1,
-                    "Enrty 1",
-                    -30.0,
-                    400.0
-                ),
-                BookEntryStruct(
-                    2,
-                    "Enrty 2",
-                    -30.0,
-                    400.0
-                ),
-                BookEntryStruct(
-                    3,
-                    "Enrty 3",
-                    -30.0,
-                    400.0
-                )
-            )
-        ),
-        BookTabStruct(
-            4,
-            "Aug 15, 2023",
-            800.0,
-            listOf(
-                BookEntryStruct(
-                    1,
-                    "Enrty 1",
-                    -30.0,
-                    400.0
-                ),
-                BookEntryStruct(
-                    2,
-                    "Enrty 2",
-                    -30.0,
-                    400.0
-                ),
-                BookEntryStruct(
-                    3,
-                    "Enrty 3",
-                    -30.0,
-                    400.0
-                )
-            )
-        ),
-        BookTabStruct(
-            5,
-            "Aug 15, 2023",
-            800.0,
-            listOf(
-                BookEntryStruct(
-                    1,
-                    "Enrty 1",
-                    -30.0,
-                    400.0
-                ),
-                BookEntryStruct(
-                    2,
-                    "Enrty 2",
-                    -30.0,
-                    400.0
-                ),
-                BookEntryStruct(
-                    3,
-                    "Enrty 3",
-                    -30.0,
-                    400.0
-                )
-            )
-        ),
-        BookTabStruct(
-            6,
-            "Oct 12, 2023",
-            290.0,
-            listOf(
-                BookEntryStruct(
-                    1,
-                    "water",
-                    -20.0,
-                    290.0
-                ),
-                BookEntryStruct(
-                    2,
-                    "ticket",
-                    -50.0,
-                    310.0
-                ),
-                BookEntryStruct(
-                    1,
-                    "tea",
-                    -10.0,
-                    360.0
-                )
-            )
-        ),
-        BookTabStruct(
-            7,
-            "Oct 11, 2023",
-            370.0,
-            listOf(
-                BookEntryStruct(
-                    3,
-                    "food",
-                    -100.0,
-                    370.0
-                ),
-                BookEntryStruct(
-                    2,
-                    "milk",
-                    -30.0,
-                    470.0
-                ),
-                BookEntryStruct(
-                    1,
-                    "add money",
-                    +500.0,
-                    500.0
-                )
-            )
-        )
-    )
+    val state = viewModel.state.value
 
     var selectedItem by remember { mutableStateOf<Int>(1) }
-
-    val current = LocalContext.current
-
-    val isClicked =  selectedItem != null
 
 
     Scaffold(
@@ -245,7 +68,7 @@ fun BookTab(nevController: NavController, bookId: Int) {
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp),
-                    onClick = { nevController.navigate(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "/$bookId/2") },
+                    onClick = { nevController.navigate(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "?bookId=${bookId}&screenType=0") },
                     colors = ButtonDefaults.outlinedButtonColors(colorGreen300)
                 ) {
                     Text(
@@ -260,7 +83,7 @@ fun BookTab(nevController: NavController, bookId: Int) {
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp),
-                    onClick = { nevController.navigate(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "/$bookId/3") },
+                    onClick = { nevController.navigate(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "?bookId=${bookId}&screenType=1") },
                     colors = ButtonDefaults.outlinedButtonColors(colorRed300)
                 ) {
                     Text(
@@ -281,7 +104,7 @@ fun BookTab(nevController: NavController, bookId: Int) {
                 .padding(6.dp)
                 .background(ExpenseManagerColor.background)
         ) {
-            items(bookData, key = { it.id }) { item ->
+            items(state.entryGroup) { item ->
                 Card(
                     modifier = Modifier
                         .padding(6.dp)
@@ -294,13 +117,15 @@ fun BookTab(nevController: NavController, bookId: Int) {
                     ),
                 ) {
                     Column {
-                        TableHeadingComposable(item.id, selectedItem, item.date) {
+                        TableHeadingComposable(item.id, selectedItem, item.datetime) {
                             selectedItem = it
                         }
                         AnimatedVisibility(visible = (selectedItem == item.id)) {
                             Column {
-                                item.bookEntryStruct.forEachIndexed { _, bookEntry ->
-                                    TabsRowComposable(bookEntry, nevController, bookId)
+                                item.data.forEachIndexed { _, bookEntry ->
+                                    TabsRowComposable(bookEntry) {
+                                        nevController.navigate(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "?bookId=${bookId}&screenType=2&entryId=${bookEntry.id}")
+                                    }
                                 }
                                 Button(
                                     onClick = {},

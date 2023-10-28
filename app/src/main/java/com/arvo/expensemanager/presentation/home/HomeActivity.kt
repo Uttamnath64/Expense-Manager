@@ -12,18 +12,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.arvo.expensemanager.R
@@ -31,16 +33,22 @@ import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.model.dto.PageDto.PageDto
 import com.arvo.expensemanager.presentation.Routes
-import com.arvo.expensemanager.presentation.home.helper.PageItem
+import com.arvo.expensemanager.presentation.home.components.PageItem
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeActivity(nevController: NavController) {
+fun HomeActivity(
+    nevController: NavController,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
 
     val currentDate = LocalDate.now()
     val formatter = DateTimeFormatter.ofPattern("MMM dd, Y")
+    val bookTime = DateTimeFormatter.ofPattern("MMM dd, Y h:mm a")
+
+    val state = viewModel.state.value
 
     ConstraintLayout(
         modifier = Modifier
@@ -107,7 +115,7 @@ fun HomeActivity(nevController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .constrainAs(nav){
+                .constrainAs(nav) {
                     top.linkTo(spacer1.bottom)
                     start.linkTo(parent.start)
                 }
@@ -119,7 +127,22 @@ fun HomeActivity(nevController: NavController) {
 //                        tabWidth = 150.dp
 //                    )
 
-            CreatePageList(LocalContext.current, nevController)
+            LazyColumn{
+                itemsIndexed(state.homeBooks) { _, item ->
+                    PageItem(
+                        item = item,
+                        formatter = bookTime,
+                        onCLick = {
+                            nevController.navigate(Routes.BOOK_VIEW_SCREEN+"?bookId=${item.book.id}")
+                        },
+                        onEdit = {nevController.navigate(Routes.ADD_BOOK_SCREEN+"?bookId=${item.book.id}")
+                        },
+                        onDelete = {
+
+                        }
+                    )
+                }
+            }
 
         }
 
@@ -149,7 +172,7 @@ fun HomeActivity(nevController: NavController) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun CreatePageList(context: Context, nevController: NavController) {
+fun CreatePageList(context: Context, nevController: NavController, state: HomeState) {
     var pageList: List<PageDto>
     pageList = ArrayList<PageDto>()
 
@@ -239,9 +262,9 @@ fun CreatePageList(context: Context, nevController: NavController) {
 
     LazyColumn{
         itemsIndexed(pageList) { _, item ->
-            PageItem(item, context) {
-                nevController.navigate(Routes.BOOK_VIEW_SCREEN+"/${item.id}")
-            }
+//            PageItem(item, context) {
+//                nevController.navigate(Routes.BOOK_VIEW_SCREEN+"/${item.id}")
+//            }
         }
     }
 }

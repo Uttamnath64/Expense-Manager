@@ -9,8 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.arvo.expensemanager.presentation.book.BookViewActivity
-import com.arvo.expensemanager.presentation.book.AddBookActivity
 import com.arvo.expensemanager.presentation.book.AddBookEntryActivity
+import com.arvo.expensemanager.presentation.book.AddEditBookActivity
 import com.arvo.expensemanager.presentation.home.HomeActivity
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -22,27 +22,41 @@ fun NavigationGraph(){
         composable(Routes.HOME_SCREEN){
             HomeActivity(nevController)
         }
-        composable(Routes.ADD_BOOK_SCREEN){
-            AddBookActivity({},nevController)
+        composable(Routes.ADD_BOOK_SCREEN + "?bookId={bookId}",
+            arguments = listOf(navArgument("bookId") {
+                type = NavType.IntType
+                defaultValue = -1
+            })
+        ){
+            AddEditBookActivity(nevController)
         }
         composable(
-            Routes.BOOK_VIEW_SCREEN + "/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.IntType })
+            Routes.BOOK_VIEW_SCREEN + "?bookId={bookId}",
+            arguments = listOf(navArgument("bookId") {
+                type = NavType.IntType
+                defaultValue = -1
+            })
         ){ backStackEntry ->
-            val id = backStackEntry.arguments?.getInt("id")
-            if (id != null) {
-                BookViewActivity(id, nevController)
-            }
+            val bookId = backStackEntry.arguments?.getInt("bookId") ?: -1
+            BookViewActivity(bookId,nevController)
         }
-        composable(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "/{id}/{type}",
+        composable(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "?bookId={bookId}&screenType={screenType}&entryId={entryId}",
             arguments = listOf(
-                    navArgument("id"){ type = NavType.IntType},
-                    navArgument("type"){ type = NavType.IntType}
+                    navArgument("bookId"){
+                        type = NavType.IntType
+                        defaultValue = -1
+                    },
+                    navArgument("screenType"){
+                        type = NavType.IntType
+                        defaultValue = -1
+                    },
+                    navArgument("entryId"){
+                        type = NavType.IntType
+                        defaultValue = -1
+                    }
                 )
-        ){backStackEntry ->
-            val id = backStackEntry.arguments?.getInt("id")
-            val type = backStackEntry.arguments?.getInt("type")
-            AddBookEntryActivity(id,type,nevController)
+        ){
+            AddBookEntryActivity(nevController)
         }
     }
 }
