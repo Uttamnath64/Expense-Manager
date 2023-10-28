@@ -23,16 +23,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.arvo.expensemanager.R
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.theme.colorGreen300
-import com.arvo.expensemanager.model.dto.PageDto.BookEntryStruct
-import com.arvo.expensemanager.presentation.Routes
+import com.arvo.expensemanager.domain.model.Entry
 
 @Composable
-fun TableHeadingComposable(index: Int,selectedItem: Int?, date: String,onClick: (Int) -> Unit) {
+fun TableHeadingComposable(index: Int, selectedItem: Int?, date: Long, onClick: (Int) -> Unit) {
     val isClicked =  selectedItem == index
 
     val rotationState by animateFloatAsState(targetValue = if (isClicked) 90f else 270f, label = "")
@@ -127,11 +125,11 @@ fun TableHeadingComposable(index: Int,selectedItem: Int?, date: String,onClick: 
 }
 
 @Composable
-fun TabsRowComposable(data: BookEntryStruct, nevController: NavController, bookId: Int) {
+fun TabsRowComposable(data: Entry, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxSize()
-            .clickable { nevController.navigate(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "/$bookId/1") },
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent,
         ),

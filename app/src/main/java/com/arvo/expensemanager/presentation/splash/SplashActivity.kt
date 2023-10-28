@@ -1,5 +1,6 @@
 package com.arvo.expensemanager.presentation.splash
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -30,8 +31,12 @@ import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTheme
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.presentation.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
+
+@AndroidEntryPoint
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

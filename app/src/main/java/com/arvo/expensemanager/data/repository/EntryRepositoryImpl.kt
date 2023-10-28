@@ -1,6 +1,5 @@
 package com.arvo.expensemanager.data.repository
 
-import com.arvo.expensemanager.data.source.BookDao
 import com.arvo.expensemanager.data.source.EntryDao
 import com.arvo.expensemanager.domain.model.Book
 import com.arvo.expensemanager.domain.model.Entry

@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EntryDao {
-    @Query("SELECT * FROM book_entry")
+    @Query("SELECT * FROM entry")
     fun getEntries(): Flow<List<Entry>>
 
-    @Query("SELECT * FROM book_entry WHERE id = :id")
+    @Query("SELECT * FROM entry WHERE id = :id")
     suspend fun getEntry(id: Int): Entry?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

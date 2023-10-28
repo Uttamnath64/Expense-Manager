@@ -15,7 +15,7 @@ import com.arvo.expensemanager.domain.usecase.book.GetBooks
 import com.arvo.expensemanager.domain.usecase.book.InsertBook
 import com.arvo.expensemanager.domain.usecase.entry.DeleteEntry
 import com.arvo.expensemanager.domain.usecase.entry.GetEntries
-import com.arvo.expensemanager.domain.usecase.entry.GetEntriesGroups
+import com.arvo.expensemanager.domain.usecase.entry.GetEntriesByGroup
 import com.arvo.expensemanager.domain.usecase.entry.GetEntry
 import com.arvo.expensemanager.domain.usecase.entry.InsertEntry
 import dagger.Module
@@ -27,7 +27,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
     @Provides
     @Singleton
     fun provideEMDataBase(app: Application): EMDataBase{
@@ -40,19 +39,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    suspend fun providerBookRepository(db: EMDataBase): BookRepository{
+    fun providerBookRepository(db: EMDataBase): BookRepository{
         return BookRepositoryImpl(db.bookDao)
     }
 
     @Provides
     @Singleton
-    fun providerEntryRepository(db: EMDataBase): EntryRepositoryImpl{
+    fun providerEntryRepository(db: EMDataBase): EntryRepository{
         return EntryRepositoryImpl(db.entryDao)
     }
 
     @Provides
     @Singleton
-    fun providerBookUseCases(repository: BookRepository):BookUseCases{
+    fun providerBookUseCases(repository: BookRepository): BookUseCases{
         return BookUseCases(
             getBooks = GetBooks(repository),
             getBook = GetBook(repository),
@@ -63,13 +62,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providerEntryUseCases(repository: EntryRepository):EntryUseCases{
+    fun providerEntryUseCases(repository: EntryRepository): EntryUseCases{
         return EntryUseCases(
             getEntries = GetEntries(repository),
-            getEntriesGroups = GetEntriesGroups(repository),
+            getEntriesByGroup = GetEntriesByGroup(repository),
             getEntry = GetEntry(repository),
             insertEntry = InsertEntry(repository),
-            deleteEntry = DeleteEntry(repository),
+            deleteEntry = DeleteEntry(repository)
         )
     }
 }

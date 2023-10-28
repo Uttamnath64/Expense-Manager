@@ -1,6 +1,5 @@
 package com.arvo.expensemanager.presentation.book
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,65 +13,73 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTheme
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
+import com.arvo.expensemanager.app.widget.DropdownMenu
 import com.arvo.expensemanager.app.widget.TextFieldComposable
 import com.arvo.expensemanager.app.widget.TopBarComposable
-import java.sql.Timestamp
+import com.arvo.expensemanager.presentation.book.events.AddEditEntryEvent
+import com.arvo.expensemanager.presentation.book.viewModels.AddEditEntryViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddBookEntryActivity(id: Int?, type: Int?, nevController: NavHostController) {
+fun AddBookEntryActivity(
+    nevController: NavHostController,
+    viewModel: AddEditEntryViewModel = hiltViewModel(),
+) {
 
-    val current = LocalContext.current
+    val entryTitle = viewModel.entryTitle.value
+    val entryDescription = viewModel.entryDescription.value
+    val entryAmount = viewModel.entryAmount.value
+    val entryPaymentMethod = viewModel.entryPaymentMethod.value
 
-    var title by remember { mutableStateOf("")}
-    var description by remember { mutableStateOf("")}
-    var amount by remember { mutableStateOf<String>("")}
-    var caseType by remember { mutableStateOf<Boolean>(false)}
-    var bookId by remember { mutableStateOf<Int>(1)}
-    var paymentType by remember { mutableStateOf<String>("")}
-    var date by remember { mutableStateOf<Timestamp>(Timestamp(System.currentTimeMillis()))}
+    val screenType = viewModel.screenType.value
 
-    val isActive = (title.trim() != "" && amount.toInt() > 0)
+    val isActive = (entryTitle.trim() != "" && !entryAmount.isEmpty()  && entryAmount.toInt() > 0)
 
-    // set Screen
     var style: TextStyle
-    var topBarTitle = ""
+    var topBarTitle: String
+    var selectedIndex by remember { mutableIntStateOf(entryPaymentMethod) }
 
-    when (type) {
+
+    style = ExpenseManagerTypography.titleMedium.copy(
+        color = ExpenseManagerColor.outline
+    )
+
+    topBarTitle = "Edit Entry"
+
+    when (screenType) {
+        0 -> {
+            style = ExpenseManagerTypography.titleMedium.copy(
+                color = ExpenseManagerColor.tertiary
+            )
+            topBarTitle = "Add Cash In Entry"
+        }
         1 -> {
+            style = ExpenseManagerTypography.titleMedium.copy(
+                color = ExpenseManagerColor.error
+            )
+            topBarTitle = "Add Cash Out Entry"
+        }
+        else -> {
             style = ExpenseManagerTypography.titleMedium.copy(
                 color = ExpenseManagerColor.outline
             )
             topBarTitle = "Edit Entry"
-        }
-        2 -> {
-            style = ExpenseManagerTypography.titleMedium.copy(
-                color = ExpenseManagerColor.tertiary
-            )
-            topBarTitle = "Add Case In Entry"
-        }
-        else -> {
-            style = ExpenseManagerTypography.titleMedium.copy(
-                color = ExpenseManagerColor.error
-            )
-            topBarTitle = "Add Case Out Entry"
         }
     }
 
@@ -87,7 +94,7 @@ fun AddBookEntryActivity(id: Int?, type: Int?, nevController: NavHostController)
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            var (data, btn) = createRefs()
+            val (data, btn) = createRefs()
             Column(
                 modifier = Modifier
                     .padding(20.dp)
@@ -100,66 +107,49 @@ fun AddBookEntryActivity(id: Int?, type: Int?, nevController: NavHostController)
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
-                    value = title,
+                    text = entryTitle,
                     onValueChange = {
-                        title = it
+                        viewModel.onEvent(AddEditEntryEvent.EnteredTitle(it))
                     },
-                    label = "Enter title",
-                    isError = false,
-                    errorText = "",
-                    imeAction = ImeAction.Done
+                    hint = "Enter title"
                 )
                 TextFieldComposable(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
-                    value = description,
+                    text = entryDescription,
                     onValueChange = {
-                        description = it
+                        viewModel.onEvent(AddEditEntryEvent.EnteredDescription(it))
                     },
-                    label = "Enter description",
-                    isError = false,
-                    errorText = "",
-                    imeAction = ImeAction.Done
+                    hint = "Enter description"
                 )
                 TextFieldComposable(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
-                    value = amount,
+                    text = entryAmount,
                     onValueChange = {
-                        amount = it
+                        viewModel.onEvent(AddEditEntryEvent.EnteredAmount(it))
                     },
-                    label = "Enter amount",
-                    isError = false,
-                    errorText = "",
-                    imeAction = ImeAction.Done,
+                    hint = "Enter amount",
                     type = KeyboardType.Number
                 )
-                TextFieldComposable(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp),
-                    value = paymentType,
-                    onValueChange = {
-                        paymentType = it
-                    },
-                    label = "Enter payment type",
-                    isError = false,
-                    errorText = "",
-                    imeAction = ImeAction.Done
+                DropdownMenu(
+                    label = "Enter payment method",
+                    items = listOf("Cash", "UPI", "Bank"),
+                    selectedIndex = selectedIndex,
+                    onItemSelected = {
+                            index, _ -> selectedIndex = index
+                            viewModel.onEvent(AddEditEntryEvent.SelectPaymentType(index))
+                        },
                 )
             }
 
             Button(
                 enabled = isActive,
                 onClick = {
-                    if (isActive){
-                        Toast.makeText(current,
-                            "Title - "+title+"\nDes. - "+description,
-                            Toast.LENGTH_LONG
-                            ).show()
-                    }
+                    viewModel.onEvent(AddEditEntryEvent.SaveEntry)
+                    nevController.popBackStack()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -188,7 +178,7 @@ fun AddBookEntryActivity(id: Int?, type: Int?, nevController: NavHostController)
 fun AddBookEntryActivityPreview(){
     ExpenseManagerTheme {
         Surface {
-            AddBookEntryActivity(0,0, rememberNavController()
+            AddBookEntryActivity(rememberNavController()
             )
         }
     }

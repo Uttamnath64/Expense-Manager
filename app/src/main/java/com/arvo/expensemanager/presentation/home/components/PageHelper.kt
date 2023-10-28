@@ -1,6 +1,8 @@
 package com.arvo.expensemanager.presentation.home.components
 
-import android.content.Context
+import android.os.Build
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,12 +10,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.IconButton
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,15 +36,34 @@ import com.arvo.expensemanager.R
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.theme.colorGreen900
-import com.arvo.expensemanager.model.dto.PageDto.PageDto
+import com.arvo.expensemanager.data.local.HomeBook
+import com.arvo.expensemanager.domain.model.Book
+import java.text.DecimalFormat
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+import kotlin.math.roundToInt
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PageItem(item: PageDto, context: Context, onCLick: (Int) -> Unit) {
+fun PageItem(
+    item: HomeBook,
+    formatter: DateTimeFormatter,
+    onCLick: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
+) {
+    val instant = Instant.ofEpochMilli(item.book.timestamp)
+    val temporalAccessor = instant.atZone(ZoneId.systemDefault())
+
+    val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+
+
     Card(
-        onClick = {
-            onCLick(item.id)
-        },
+        onClick = onCLick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(7.dp),
@@ -51,7 +78,7 @@ fun PageItem(item: PageDto, context: Context, onCLick: (Int) -> Unit) {
             modifier = Modifier
                 .padding(12.dp),
         ) {
-            val (icon, mainData, amount, moreBtn, description) = createRefs()
+            val (icon, mainData, amount, moreBtn,menu, description) = createRefs()
 
             // Icon
             Box(
@@ -68,7 +95,7 @@ fun PageItem(item: PageDto, context: Context, onCLick: (Int) -> Unit) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "${item.title.toUpperCase().first()}",
+                    text = "${item.book.title.uppercase(Locale.ROOT).first()}",
                     style = ExpenseManagerTypography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
                         color = ExpenseManagerColor.primary
@@ -86,15 +113,15 @@ fun PageItem(item: PageDto, context: Context, onCLick: (Int) -> Unit) {
                     }
             ) {
                 Text(
-                    text = "${item.title}",
+                    text = item.book.title,
                     style = ExpenseManagerTypography.titleMedium.copy(
-                        fontWeight =  FontWeight.Bold
+                        fontWeight = FontWeight.Bold
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = if (item.isUpdated) "Updated at ${item.date}" else "Created at ${item.date}",
+                    text = formatter.format(temporalAccessor),
                     style = ExpenseManagerTypography.labelMedium.copy(
                         color = ExpenseManagerColor.outline
                     ),
@@ -107,9 +134,9 @@ fun PageItem(item: PageDto, context: Context, onCLick: (Int) -> Unit) {
 
             // Amount
             Text(
-                text = "${item.amount}",
+                text = DecimalFormat("#.##").format(item.total).toString(),
                 style = ExpenseManagerTypography.titleMedium.copy(
-                    color = if(item.amount >= 0) colorGreen900 else ExpenseManagerColor.error
+                    color = if (item.total >= 0) colorGreen900 else ExpenseManagerColor.error
                 ),
                 modifier = Modifier
                     .padding(8.dp)
@@ -121,23 +148,50 @@ fun PageItem(item: PageDto, context: Context, onCLick: (Int) -> Unit) {
             )
 
             // More Button
-            Icon(
-                painter = painterResource(id = R.drawable.ic_more),
-                contentDescription = "more button",
+            IconButton(
+                onClick = { expanded = true },
                 modifier = Modifier
-                    .size(30.dp)
-                    .padding(8.dp)
                     .constrainAs(moreBtn) {
                         top.linkTo(amount.top)
                         end.linkTo(parent.end)
                         bottom.linkTo(amount.bottom)
-                    },
-                tint = ExpenseManagerColor.outline
-            )
+                    }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_more),
+                    contentDescription = "more button",
+                    modifier = Modifier
+                        .size(30.dp)
+                        .padding(8.dp),
+                    tint = ExpenseManagerColor.outline,
+                )
+            }
+            Box(modifier = Modifier
+                .constrainAs(menu) {
+                    top.linkTo(moreBtn.bottom)
+                    end.linkTo(parent.end)
+                }){
+                DropdownMenu(
+                    expanded = expanded ,
+                    onDismissRequest = { expanded = false },
+                ) {
+                    DropdownMenuItem(
+                        onClick = onEdit
+                    ){
+                        Text(text = "Edit")
+                    }
+                    DropdownMenuItem(
+                        onClick = onDelete
+                    ){
+
+                        Text(text = "Delete")
+                    }
+                }
+            }
 
             // Description (Updated Date)
             Text(
-                text = "${item.description}",
+                text = item.book.description,
                 style = ExpenseManagerTypography.titleSmall.copy(
                     color = ExpenseManagerColor.outline
                 ),
@@ -154,19 +208,20 @@ fun PageItem(item: PageDto, context: Context, onCLick: (Int) -> Unit) {
             )
         }
     }
-
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun PageHelperPreview(){
-    PageItem(PageDto(
-        1,
-        "Room Expense",
-        "All the expenses related to room items or groceries All the expenses related to room items or groceries All the expenses related to room items or groceries",
-        "Oct 8, 2023",
-        true,
-        125.75
-    ), LocalContext.current,{}
+    PageItem(HomeBook(
+        Book(
+            1,
+            "Room Expense",
+            "All the expenses related to room items or groceries All the expenses related to room items or groceries All the expenses related to room items or groceries",
+            1634969058000L
+        ),
+        234.3
+    ), DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a"),{},{},{}
     )
 }

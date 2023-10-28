@@ -31,27 +31,27 @@ import com.arvo.expensemanager.app.theme.ExpenseManagerTheme
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.widget.TextFieldComposable
 import com.arvo.expensemanager.app.widget.TopBarComposable
+import com.arvo.expensemanager.presentation.book.events.AddEditBookEvent
 import com.arvo.expensemanager.presentation.book.viewModels.AddEditBookViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditBookActivity(
     nevController: NavHostController,
-//    viewModel: AddEditBookViewModel = hiltViewModel()
+    viewModel: AddEditBookViewModel = hiltViewModel()
 ) {
 
-    val current = LocalContext.current
 
-//    val uiState by viewModel.uiState.collectAsState()
+    val bookTitleState = viewModel.bookTitle.value
+    val bookDescriptionState = viewModel.bookDescription.value
 
-    var title by remember { mutableStateOf("")}
-    var description by remember { mutableStateOf("")}
+    val isActive = (bookTitleState.trim() != "" )
 
-    val isActive = (title.trim() != "" && description.trim() != "")
+    val screenType = viewModel.screenType
 
     Scaffold(
         topBar = {
-            TopBarComposable(text = "Add Book", nevController)
+            TopBarComposable(text = if(screenType.value == 0) "Add Book" else "Edit Book", nevController)
         },
     ) { padding ->
         ConstraintLayout(
@@ -59,7 +59,7 @@ fun AddEditBookActivity(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            var (data, btn) = createRefs()
+            val (data, btn) = createRefs()
             Column(
                 modifier = Modifier
                     .padding(20.dp)
@@ -72,27 +72,21 @@ fun AddEditBookActivity(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
-                    value = title,
+                    text = bookTitleState,
                     onValueChange = {
-                        title = it
+                        viewModel.onEvent(AddEditBookEvent.EnteredTitle(it))
                     },
-                    label = "Enter name",
-                    isError = false,
-                    errorText = "",
-                    imeAction = ImeAction.Done
+                    hint = "Enter name"
                 )
                 TextFieldComposable(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
-                    value = description,
+                    text = bookDescriptionState,
                     onValueChange = {
-                        description = it
+                         viewModel.onEvent(AddEditBookEvent.EnteredDescription(it))
                     },
-                    label = "Enter description",
-                    isError = false,
-                    errorText = "",
-                    imeAction = ImeAction.Done,
+                    hint = "Enter description"
                 )
             }
 
@@ -100,10 +94,8 @@ fun AddEditBookActivity(
                 enabled = isActive,
                 onClick = {
                     if (isActive){
-                        Toast.makeText(current,
-                            "Title - "+title+"\nDes. - "+description,
-                            Toast.LENGTH_LONG
-                            ).show()
+                        viewModel.onEvent(AddEditBookEvent.SaveBook)
+                        nevController.popBackStack()
                     }
                 },
                 modifier = Modifier
@@ -118,7 +110,7 @@ fun AddEditBookActivity(
             ) {
                 Text(
                     modifier = Modifier.padding(4.dp),
-                    text = "Add",
+                    text = "Save",
                     style = ExpenseManagerTypography.titleMedium.copy(
                         color = ExpenseManagerColor.background
                     )

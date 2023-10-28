@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.arvo.expensemanager.app.theme.ExpenseManagerTheme
@@ -19,11 +20,14 @@ import com.arvo.expensemanager.app.widget.TopBarComposable
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @OptIn(
-    ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class,
     ExperimentalPagerApi::class
 )
 @Composable
-fun BookViewActivity(bookId: Int?, nevController: NavHostController) {
+fun BookViewActivity(
+    bookId: Int?,
+    nevController: NavHostController
+) {
 
 //    val tabs = listOf(
 //        TabItem.Entity,
@@ -46,7 +50,7 @@ fun BookViewActivity(bookId: Int?, nevController: NavHostController) {
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
             Tabs(tabs = tabs, pagerState = pagerState)
-            TabsContent(tabs = tabs, pagerState = pagerState, nevController,bookId)
+            TabsContent(tabs = tabs, pagerState = pagerState, nevController, bookId)
         }
     }
 }

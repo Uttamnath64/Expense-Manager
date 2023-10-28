@@ -1,5 +1,6 @@
 package com.arvo.expensemanager.data.repository
 
+import com.arvo.expensemanager.data.local.HomeBook
 import com.arvo.expensemanager.data.source.BookDao
 import com.arvo.expensemanager.domain.model.Book
 import com.arvo.expensemanager.domain.model.Entry
@@ -10,7 +11,7 @@ class BookRepositoryImpl(
     private val dao: BookDao
 ): BookRepository {
 
-    override fun getBooks(): Flow<List<Book>> {
+    override fun getBooks(): Flow<List<HomeBook>> {
         return dao.getBooks()
     }
 
