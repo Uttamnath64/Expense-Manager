@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.IconButton
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -36,6 +35,7 @@ import com.arvo.expensemanager.R
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.theme.colorGreen900
+import com.arvo.expensemanager.app.theme.colorRed900
 import com.arvo.expensemanager.data.local.HomeBook
 import com.arvo.expensemanager.domain.model.Book
 import java.text.DecimalFormat
@@ -43,7 +43,6 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-import kotlin.math.roundToInt
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,7 +57,6 @@ fun PageItem(
     val instant = Instant.ofEpochMilli(item.book.timestamp)
     val temporalAccessor = instant.atZone(ZoneId.systemDefault())
 
-    val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
 
 
@@ -136,7 +134,7 @@ fun PageItem(
             Text(
                 text = DecimalFormat("#.##").format(item.total).toString(),
                 style = ExpenseManagerTypography.titleMedium.copy(
-                    color = if (item.total >= 0) colorGreen900 else ExpenseManagerColor.error
+                    color = if (item.total >= 0) colorGreen900 else colorRed900
                 ),
                 modifier = Modifier
                     .padding(8.dp)

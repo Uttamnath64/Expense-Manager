@@ -1,6 +1,8 @@
 package com.arvo.expensemanager.presentation.book.tabs
 
-
+import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -25,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,13 +37,13 @@ import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.theme.colorGreen300
 import com.arvo.expensemanager.app.theme.colorRed300
-import com.arvo.expensemanager.model.dto.PageDto.BookEntryStruct
-import com.arvo.expensemanager.model.dto.PageDto.BookTabStruct
 import com.arvo.expensemanager.presentation.Routes
 import com.arvo.expensemanager.presentation.book.components.TableHeadingComposable
 import com.arvo.expensemanager.presentation.book.components.TabsRowComposable
 import com.arvo.expensemanager.presentation.book.viewModels.ViewBookViewModel
 
+@SuppressLint("AutoboxingStateCreation")
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookTab(
@@ -52,9 +53,7 @@ fun BookTab(
 ) {
 
     val state = viewModel.state.value
-
-    var selectedItem by remember { mutableStateOf<Int>(1) }
-
+    var selectedItem by remember { mutableStateOf(1) }
 
     Scaffold(
         modifier = Modifier
@@ -68,12 +67,12 @@ fun BookTab(
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp),
-                    onClick = { nevController.navigate(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "?bookId=${bookId}&screenType=0") },
+                    onClick = { nevController.navigate(Routes.ADD_EDIT_ENTRY_SCREEN + "?bookId=${bookId}&screenType=0") },
                     colors = ButtonDefaults.outlinedButtonColors(colorGreen300)
                 ) {
                     Text(
                         modifier = Modifier.padding(4.dp),
-                        text = "Case IN",
+                        text = "Cash IN",
                         style = ExpenseManagerTypography.titleSmall.copy(
                             color = ExpenseManagerColor.background
                         )
@@ -83,12 +82,12 @@ fun BookTab(
                     modifier = Modifier
                         .weight(1f)
                         .padding(10.dp),
-                    onClick = { nevController.navigate(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "?bookId=${bookId}&screenType=1") },
+                    onClick = { nevController.navigate(Routes.ADD_EDIT_ENTRY_SCREEN + "?bookId=${bookId}&screenType=1") },
                     colors = ButtonDefaults.outlinedButtonColors(colorRed300)
                 ) {
                     Text(
                         modifier = Modifier.padding(4.dp),
-                        text = "Case OUT",
+                        text = "Cash OUT",
                         style = ExpenseManagerTypography.titleSmall.copy(
                             color = ExpenseManagerColor.background
                         )
@@ -117,15 +116,19 @@ fun BookTab(
                     ),
                 ) {
                     Column {
-                        TableHeadingComposable(item.id, selectedItem, item.datetime) {
+                        TableHeadingComposable(item, selectedItem) { it ->
                             selectedItem = it
                         }
                         AnimatedVisibility(visible = (selectedItem == item.id)) {
                             Column {
-                                item.data.forEachIndexed { _, bookEntry ->
-                                    TabsRowComposable(bookEntry) {
-                                        nevController.navigate(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "?bookId=${bookId}&screenType=2&entryId=${bookEntry.id}")
-                                    }
+                                var total = 0.0
+                                item.data.forEachIndexed { _, entry ->
+                                    total += if (entry.paymentType) entry.amount else -entry.amount
+                                    TabsRowComposable(entry, total,
+                                        onCLick = {
+                                            nevController.navigate(Routes.ADD_EDIT_ENTRY_SCREEN + "?bookId=${bookId}&screenType=2&entryId=${entry.id}")
+                                        }
+                                    )
                                 }
                                 Button(
                                     onClick = {},
@@ -151,6 +154,7 @@ fun BookTab(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun BookTabPreview() {

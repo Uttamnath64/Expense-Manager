@@ -67,8 +67,7 @@ fun TextFieldComposable(
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = type
-        ),
-        shape = CircleShape
+        )
     )
 
 }
@@ -155,7 +154,7 @@ fun <T> DropdownMenu(
 
     Box(modifier = modifier.height(IntrinsicSize.Min)) {
         OutlinedTextField(
-            label = { Text(label, style = ExpenseManagerTypography.bodySmall) },
+            label = { Text(label) },
             value = items.getOrNull(selectedIndex)?.let { selectedItemToString(it) } ?: "",
             enabled = enabled,
             modifier = Modifier
@@ -167,8 +166,7 @@ fun <T> DropdownMenu(
             },
             onValueChange = { },
             readOnly = true,
-            textStyle = ExpenseManagerTypography.bodyLarge,
-            shape = CircleShape
+            textStyle = ExpenseManagerTypography.bodyLarge
         )
 
         // Transparent clickable surface on top of OutlinedTextField
@@ -188,6 +186,7 @@ fun <T> DropdownMenu(
         ) {
             Surface(
                 shape = RoundedCornerShape(12.dp),
+                color = Color.White
             ) {
                 val listState = rememberLazyListState()
                 if (selectedIndex > -1) {

@@ -3,9 +3,11 @@ package com.arvo.expensemanager.presentation.book
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,13 +30,6 @@ fun BookViewActivity(
     bookId: Int?,
     nevController: NavHostController
 ) {
-
-//    val tabs = listOf(
-//        TabItem.Entity,
-//        TabItem.Analysis,
-//        TabItem.Category
-//    )
-
     val tabs = listOf(
         TabItem.Entity,
         TabItem.Analysis,
@@ -45,7 +40,10 @@ fun BookViewActivity(
 
     Scaffold(
         topBar = {
-            TopBarComposable(text = "View Book", nevController)
+            TopBarComposable(
+                text = "View Book",
+                nevController
+            )
         },
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {

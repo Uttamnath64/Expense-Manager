@@ -22,7 +22,7 @@ fun NavigationGraph(){
         composable(Routes.HOME_SCREEN){
             HomeActivity(nevController)
         }
-        composable(Routes.ADD_BOOK_SCREEN + "?bookId={bookId}",
+        composable(Routes.ADD_EDIT_BOOK_SCREEN + "?bookId={bookId}",
             arguments = listOf(navArgument("bookId") {
                 type = NavType.IntType
                 defaultValue = -1
@@ -31,7 +31,7 @@ fun NavigationGraph(){
             AddEditBookActivity(nevController)
         }
         composable(
-            Routes.BOOK_VIEW_SCREEN + "?bookId={bookId}",
+            Routes.VIEW_BOOK_SCREEN + "?bookId={bookId}",
             arguments = listOf(navArgument("bookId") {
                 type = NavType.IntType
                 defaultValue = -1
@@ -40,7 +40,7 @@ fun NavigationGraph(){
             val bookId = backStackEntry.arguments?.getInt("bookId") ?: -1
             BookViewActivity(bookId,nevController)
         }
-        composable(Routes.ADD_EDIT_BOOK_ENTRY_SCREEN + "?bookId={bookId}&screenType={screenType}&entryId={entryId}",
+        composable(Routes.ADD_EDIT_ENTRY_SCREEN + "?bookId={bookId}&screenType={screenType}&entryId={entryId}",
             arguments = listOf(
                     navArgument("bookId"){
                         type = NavType.IntType

@@ -14,6 +14,7 @@ import com.arvo.expensemanager.domain.usecase.book.GetBook
 import com.arvo.expensemanager.domain.usecase.book.GetBooks
 import com.arvo.expensemanager.domain.usecase.book.InsertBook
 import com.arvo.expensemanager.domain.usecase.entry.DeleteEntry
+import com.arvo.expensemanager.domain.usecase.entry.GetAnalysis
 import com.arvo.expensemanager.domain.usecase.entry.GetEntries
 import com.arvo.expensemanager.domain.usecase.entry.GetEntriesByGroup
 import com.arvo.expensemanager.domain.usecase.entry.GetEntry
@@ -66,6 +67,7 @@ object AppModule {
         return EntryUseCases(
             getEntries = GetEntries(repository),
             getEntriesByGroup = GetEntriesByGroup(repository),
+            getAnalysis = GetAnalysis(repository),
             getEntry = GetEntry(repository),
             insertEntry = InsertEntry(repository),
             deleteEntry = DeleteEntry(repository)

@@ -1,9 +1,12 @@
 package com.arvo.expensemanager.presentation.book.tabs
 
+import android.os.Build
 import android.widget.ProgressBar
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,16 +32,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.theme.colorGreen
+import com.arvo.expensemanager.app.theme.colorGreen900
 import com.arvo.expensemanager.app.theme.colorRed
+import com.arvo.expensemanager.app.theme.colorRed900
 import com.arvo.expensemanager.app.widget.CustomTab
+import com.arvo.expensemanager.presentation.book.viewModels.AnalysisViewModel
+import java.text.DecimalFormat
+import java.time.Instant
+import java.time.ZoneId
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AnalysisTab(nevController: NavController, bookId: Int) {
+fun AnalysisTab(
+    nevController: NavController,
+    bookId: Int,
+    viewModel: AnalysisViewModel = hiltViewModel(),
+) {
+    val analysis = viewModel.state.value
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -82,7 +100,7 @@ fun AnalysisTab(nevController: NavController, bookId: Int) {
                             }
                     )
                     Text(
-                        text = "1200+",
+                        text = DecimalFormat("#.##").format(analysis.total).toString(),
                         style = ExpenseManagerTypography.titleLarge.copy(
                             fontSize = 32.sp,
                             color = ExpenseManagerColor.background,
@@ -114,7 +132,7 @@ fun AnalysisTab(nevController: NavController, bookId: Int) {
                             }
                     ) {
                         LinearProgressIndicator(
-                            progress = 0.8f,
+                            progress = 0.0f,
                             color = colorGreen,
                             modifier = Modifier
                                 .height(8.dp)
@@ -122,7 +140,7 @@ fun AnalysisTab(nevController: NavController, bookId: Int) {
                                 .clip(RoundedCornerShape(16.dp)),
                         )
                         Text(
-                            text = "80%",
+                            text = "0%",
                             style = ExpenseManagerTypography.labelLarge.copy(
                                 color = ExpenseManagerColor.surface
                             ),
@@ -139,7 +157,7 @@ fun AnalysisTab(nevController: NavController, bookId: Int) {
                             }
                     ) {
                         LinearProgressIndicator(
-                            progress = 0.6f,
+                            progress = 0.0f,
                             color = colorRed,
                             modifier = Modifier
                                 .height(8.dp)
@@ -147,7 +165,7 @@ fun AnalysisTab(nevController: NavController, bookId: Int) {
                                 .clip(RoundedCornerShape(16.dp)),
                         )
                         Text(
-                            text = "60%",
+                            text = "0%",
                             style = ExpenseManagerTypography.labelLarge.copy(
                                 color = ExpenseManagerColor.surface
                             ),
@@ -182,7 +200,7 @@ fun AnalysisTab(nevController: NavController, bookId: Int) {
                     ) {
                         var (total,lable) = createRefs()
                         Text(
-                            text = "4000",
+                            text = DecimalFormat("#.##").format(analysis.cashInTotalThisMonth).toString(),
                             style = ExpenseManagerTypography.titleLarge.copy(
                                 fontSize = 28.sp,
                                 color = colorGreen,
@@ -197,7 +215,7 @@ fun AnalysisTab(nevController: NavController, bookId: Int) {
                         )
                         Text(
                             text = "This month all case in.",
-                            style = ExpenseManagerTypography.labelLarge,
+                            style = ExpenseManagerTypography.labelMedium,
                             modifier = Modifier
                                 .constrainAs(lable) {
                                     bottom.linkTo(parent.bottom)
@@ -226,7 +244,7 @@ fun AnalysisTab(nevController: NavController, bookId: Int) {
                     ) {
                         var (total,lable) = createRefs()
                         Text(
-                            text = "2000",
+                            text = DecimalFormat("#.##").format(analysis.cashOutTotalThisMonth).toString(),
                             style = ExpenseManagerTypography.titleLarge.copy(
                                 fontSize = 28.sp,
                                 color = colorRed,
@@ -241,7 +259,7 @@ fun AnalysisTab(nevController: NavController, bookId: Int) {
                         )
                         Text(
                             text = "This month all case out.",
-                            style = ExpenseManagerTypography.labelLarge,
+                            style = ExpenseManagerTypography.labelMedium,
                             modifier = Modifier
                                 .constrainAs(lable) {
                                     bottom.linkTo(parent.bottom)
@@ -252,9 +270,121 @@ fun AnalysisTab(nevController: NavController, bookId: Int) {
                 }
             }
         }
+        Text(
+            text = "Payment Method",
+            style = ExpenseManagerTypography.bodyMedium,
+            modifier = Modifier
+                .padding(10.dp, 10.dp)
+        )
+        Card(
+            modifier = Modifier
+                .padding(6.dp)
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = ExpenseManagerColor.surface,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 1.dp,
+            ),
+        ) {
+            Row(
+                modifier = Modifier.padding(5.dp,15.dp)
+            ) {
+                Text(
+                    text = "Cash",
+                    style = ExpenseManagerTypography.labelMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                )
+                Text(
+                    text = DecimalFormat("#.##").format(analysis.cash).toString(),
+                    style = ExpenseManagerTypography.labelMedium.copy(
+                        color = colorGreen900,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 10.dp),
+                    textAlign = TextAlign.End
+                )
+            }
+        }
+        Card(
+            modifier = Modifier
+                .padding(6.dp)
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = ExpenseManagerColor.surface,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 1.dp,
+            ),
+        ) {
+            Row(
+                modifier = Modifier.padding(5.dp,15.dp)
+            ) {
+                Text(
+                    text = "UPI",
+                    style = ExpenseManagerTypography.labelMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                )
+                Text(
+                    text = DecimalFormat("#.##").format(analysis.upi).toString(),
+                    style = ExpenseManagerTypography.labelMedium.copy(
+                        color = colorGreen900,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 10.dp),
+                    textAlign = TextAlign.End
+                )
+            }
+        }
+        Card(
+            modifier = Modifier
+                .padding(6.dp)
+                .fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = ExpenseManagerColor.surface,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 1.dp,
+            ),
+        ) {
+            Row(
+                modifier = Modifier.padding(5.dp,15.dp)
+            ) {
+                Text(
+                    text = "Back",
+                    style = ExpenseManagerTypography.labelMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier
+                        .padding(start = 10.dp)
+                )
+                Text(
+                    text = DecimalFormat("#.##").format(analysis.bank).toString(),
+                    style = ExpenseManagerTypography.labelMedium.copy(
+                        color = colorGreen900,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 10.dp),
+                    textAlign = TextAlign.End
+                )
+            }
+        }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun AnalysisTabPreview() {

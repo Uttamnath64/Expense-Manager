@@ -1,5 +1,6 @@
 package com.arvo.expensemanager.data.repository
 
+import com.arvo.expensemanager.data.local.Analysis
 import com.arvo.expensemanager.data.source.EntryDao
 import com.arvo.expensemanager.domain.model.Book
 import com.arvo.expensemanager.domain.model.Entry
@@ -11,8 +12,12 @@ class EntryRepositoryImpl(
     private val dao: EntryDao
 ): EntryRepository {
 
-    override fun getEntries(): Flow<List<Entry>> {
-        return dao.getEntries()
+    override fun getEntries(id: Int): Flow<List<Entry>> {
+        return dao.getEntries(id)
+    }
+
+    override suspend fun getAnalysis(id: Int): Analysis {
+        return dao.getAnalysis(id)
     }
 
     override suspend fun getEntry(id: Int): Entry? {

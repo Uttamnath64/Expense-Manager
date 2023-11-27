@@ -1,5 +1,7 @@
 package com.arvo.expensemanager.presentation.book.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,17 +30,29 @@ import com.arvo.expensemanager.R
 import com.arvo.expensemanager.app.theme.ExpenseManagerColor
 import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.theme.colorGreen300
+import com.arvo.expensemanager.app.theme.colorGreen900
+import com.arvo.expensemanager.app.theme.colorRed900
+import com.arvo.expensemanager.data.local.EntryGroup
 import com.arvo.expensemanager.domain.model.Entry
+import java.text.DecimalFormat
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TableHeadingComposable(index: Int, selectedItem: Int?, date: Long, onClick: (Int) -> Unit) {
-    val isClicked =  selectedItem == index
+fun TableHeadingComposable(state: EntryGroup, selectedItem: Int?, onClick: (Int) -> Unit) {
+    val isClicked =  selectedItem == state.id
+
+    val formatter = DateTimeFormatter.ofPattern("MMM dd, Y")
+    val instant = Instant.ofEpochMilli(state.datetime)
+    val temporalAccessor = instant.atZone(ZoneId.systemDefault())
 
     val rotationState by animateFloatAsState(targetValue = if (isClicked) 90f else 270f, label = "")
     Row(
         modifier = Modifier
             .fillMaxSize()
-            .clickable { onClick(if(isClicked) 0 else index)},
+            .clickable { onClick(if(isClicked) 0 else state.id)},
     ) {
         Row(
             modifier = Modifier
@@ -64,7 +79,7 @@ fun TableHeadingComposable(index: Int, selectedItem: Int?, date: Long, onClick: 
                     .fillMaxWidth(.4f),
             ) {
                 Text(
-                    text = "18 Aug, 2023",
+                    text = formatter.format(temporalAccessor),
                     style = ExpenseManagerTypography.labelLarge.copy(
                         fontWeight = FontWeight.Bold
                     )
@@ -102,9 +117,9 @@ fun TableHeadingComposable(index: Int, selectedItem: Int?, date: Long, onClick: 
                             )
                         )
                         Text(
-                            text = "970",
+                            text = DecimalFormat("#.##").format(state.total).toString(),
                             style = ExpenseManagerTypography.labelLarge.copy(
-                                color = colorGreen300,
+                                color = if (state.total >= 0) colorGreen900 else colorRed900,
                                 fontWeight = FontWeight.Bold
                             )
                         )
@@ -124,15 +139,17 @@ fun TableHeadingComposable(index: Int, selectedItem: Int?, date: Long, onClick: 
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TabsRowComposable(data: Entry, onClick: () -> Unit) {
+fun TabsRowComposable(state: Entry, total: Double, onCLick: () -> Unit) {
+    val amount = if(state.paymentType) state.amount else -state.amount
     Card(
+        onClick = onCLick,
         modifier = Modifier
-            .fillMaxSize()
-            .clickable { onClick() },
+            .fillMaxSize(),
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent,
-        ),
+        )
     ) {
         Row(
             modifier = Modifier
@@ -145,7 +162,7 @@ fun TabsRowComposable(data: Entry, onClick: () -> Unit) {
                     .fillMaxWidth(.4f),
             ) {
                 Text(
-                    text = data.title,
+                    text = state.title,
                     style = ExpenseManagerTypography.labelLarge
                 )
             }
@@ -155,8 +172,9 @@ fun TabsRowComposable(data: Entry, onClick: () -> Unit) {
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
-                    text = data.toString(),
+                    text = amount.toString(),
                     style = ExpenseManagerTypography.labelLarge.copy(
+                        color = if (amount >= 0) colorGreen900 else colorRed900,
                         fontWeight = FontWeight.Bold
                     )
                 )
@@ -172,9 +190,9 @@ fun TabsRowComposable(data: Entry, onClick: () -> Unit) {
                     Text(
                         modifier = Modifier
                             .padding(end = 8.dp),
-                        text = data.amount.toString(),
+                        text = total.toString(),
                         style = ExpenseManagerTypography.labelLarge.copy(
-                            color = colorGreen300,
+                            color = if (total >= 0) colorGreen900 else colorRed900,
                             fontWeight = FontWeight.Bold
                         )
                     )

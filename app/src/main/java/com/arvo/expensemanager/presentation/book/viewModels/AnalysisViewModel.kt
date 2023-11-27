@@ -1,33 +1,39 @@
 package com.arvo.expensemanager.presentation.book.viewModels
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.arvo.expensemanager.data.local.EntryGroup
-import com.arvo.expensemanager.domain.model.Entry
+import com.arvo.expensemanager.data.local.Analysis
 import com.arvo.expensemanager.domain.usecase.EntryUseCases
-import com.arvo.expensemanager.presentation.book.states.EntryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class ViewBookViewModel @Inject constructor(
+class AnalysisViewModel @Inject constructor(
     private val entryUseCases: EntryUseCases,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(EntryState())
-    val state: State<EntryState> = _state
+    private val _state = mutableStateOf(Analysis(
+        cashOutTotalThisMonth = 0.0,
+        cashInTotalThisMonth = 0.0,
+        cashOutTotalLastMonth = 0.0,
+        cashInTotalLastMonth = 0.0,
+        cash = 0.0,
+        upi = 0.0,
+        bank = 0.0,
+        total = 0.0
+    ))
+    val state: State<Analysis> = _state
 
     private var getEntryJob: Job? = null
     private var bookId: Int = 0
@@ -35,21 +41,18 @@ class ViewBookViewModel @Inject constructor(
     init {
         try {
             bookId = savedStateHandle["bookId"] ?: 0
-            getEntryByGroup()
+            getAnalysis()
+            Log.i("uttam",state.toString())
         } catch (e: Exception){
             e.printStackTrace()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getEntryByGroup(){
+    private  fun getAnalysis(){
         getEntryJob?.cancel()
-        entryUseCases.getEntriesByGroup(bookId)
-            .onEach { entryGroup ->
-                _state.value = state.value.copy(
-                    entryGroup = entryGroup
-                )
-            }
-            .launchIn(viewModelScope)
+        viewModelScope.launch {
+            _state.value = entryUseCases.getAnalysis(bookId)
+        }
     }
 }

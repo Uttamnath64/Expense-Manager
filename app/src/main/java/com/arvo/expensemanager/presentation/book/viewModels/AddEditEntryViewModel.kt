@@ -1,12 +1,14 @@
 package com.arvo.expensemanager.presentation.book.viewModels
 
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arvo.expensemanager.domain.model.Book
 import com.arvo.expensemanager.domain.model.Entry
 import com.arvo.expensemanager.domain.usecase.EntryUseCases
 import com.arvo.expensemanager.presentation.book.events.AddEditEntryEvent
@@ -49,24 +51,33 @@ class AddEditEntryViewModel @Inject constructor(
     // current id
     private var currentId: Int? = null
     private var bookId: Int? = null
-    private var paymentType: Boolean = currentId == null && screenType.value == 0
+    private var paymentType: Boolean = false
+    private var entryData: Entry? = null
 
     init {
-        bookId = savedStateHandle["bookId"]
-        _screenType.intValue = savedStateHandle["screenType"] ?: 0
-        savedStateHandle.get<Int>("entryId")?.let { entryId ->
-            if(entryId != -1){
-                viewModelScope.launch {
-                    entryUseCases.getEntry(entryId)?.also { entry ->
-                        currentId = entry.id
-                        _entryTitle.value = entry.title
-                        _entryDescription.value = entry.description
-                        _entryAmount.value = entry.amount.toString()
-                        _entryPaymentMethod.intValue = entry.paymentMethod
-                        paymentType = entry.paymentType
+            bookId = savedStateHandle["bookId"]
+            _screenType.intValue = savedStateHandle["screenType"] ?: 0
+
+            paymentType = (screenType.value == 0)
+
+        try {
+            savedStateHandle.get<Int>("entryId")?.let { entryId ->
+                if (entryId != -1) {
+                    viewModelScope.launch {
+                        entryUseCases.getEntry(entryId)?.also { entry ->
+                            entryData = entry
+                            currentId = entry.id
+                            _entryTitle.value = entry.title
+                            _entryDescription.value = entry.description
+                            _entryPaymentMethod.value = entry.paymentMethod
+                            paymentType = entry.paymentType
+                            _entryAmount.value = entry.amount.toString()
+                        }
                     }
                 }
             }
+        } catch (e: Exception){
+            e.printStackTrace()
         }
     }
 
@@ -108,10 +119,24 @@ class AddEditEntryViewModel @Inject constructor(
                     }
                 }
             }
+            is AddEditEntryEvent.DeleteEntry -> {
+                viewModelScope.launch {
+                    try {
+                        if(entryData != null){
+                            entryUseCases.deleteEntry(entryData!!)
+                            _eventFLow.emit(UiEvent.DeleteEntry)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+            else -> {}
         }
     }
 
     sealed class UiEvent {
         object SaveEntry : UiEvent()
+        object DeleteEntry : UiEvent()
     }
 }

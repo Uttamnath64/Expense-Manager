@@ -13,9 +13,10 @@ class GetEntries(
     private val repository: EntryRepository
 ) {
     operator fun invoke(
+        id: Int,
         orderType: OrderType = OrderType.Descending
     ): Flow<List<Entry>> {
-        return repository.getEntries().map { books ->
+        return repository.getEntries(id).map { books ->
             when(orderType){
                 is OrderType.Ascending -> books.sortedBy { it.timestamp }
                 is OrderType.Descending -> books.sortedByDescending { it.timestamp }

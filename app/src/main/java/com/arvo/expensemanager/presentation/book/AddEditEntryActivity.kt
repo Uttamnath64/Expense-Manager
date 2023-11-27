@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +32,7 @@ import com.arvo.expensemanager.app.theme.ExpenseManagerTypography
 import com.arvo.expensemanager.app.widget.DropdownMenu
 import com.arvo.expensemanager.app.widget.TextFieldComposable
 import com.arvo.expensemanager.app.widget.TopBarComposable
+import com.arvo.expensemanager.domain.model.Book
 import com.arvo.expensemanager.presentation.book.events.AddEditEntryEvent
 import com.arvo.expensemanager.presentation.book.viewModels.AddEditEntryViewModel
 
@@ -49,7 +51,7 @@ fun AddBookEntryActivity(
 
     val screenType = viewModel.screenType.value
 
-    val isActive = (entryTitle.trim() != "" && !entryAmount.isEmpty()  && entryAmount.toInt() > 0)
+    val isActive = (entryTitle.trim() != "" && !entryAmount.isEmpty()  && entryAmount.toDoubleOrNull() != null)
 
     var style: TextStyle
     var topBarTitle: String
@@ -85,8 +87,21 @@ fun AddBookEntryActivity(
 
     Scaffold(
         topBar = {
-            TopBarComposable(text = topBarTitle, navController =  nevController,
-                style = style)
+            TopBarComposable(
+                text = topBarTitle,
+                navController =  nevController,
+                style = style,
+                extraBtn = screenType == 2
+            ){
+                DropdownMenuItem(
+                    onClick = {
+                        viewModel.onEvent(AddEditEntryEvent.DeleteEntry)
+                        nevController.popBackStack()
+                    }
+                ){
+                    Text(text = "Delete")
+                }
+            }
         },
     ) { padding ->
         ConstraintLayout(
@@ -163,7 +178,7 @@ fun AddBookEntryActivity(
             ) {
                 Text(
                     modifier = Modifier.padding(4.dp),
-                    text = "Add",
+                    text = "Save",
                     style = ExpenseManagerTypography.titleMedium.copy(
                         color = ExpenseManagerColor.background
                     )
